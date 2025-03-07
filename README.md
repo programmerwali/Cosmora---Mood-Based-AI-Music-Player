@@ -1,58 +1,65 @@
-Cosmora - AI Mood-Based Music Player 🎵🧠
-Cosmora is an AI-powered mood-based music player that connects with Spotify to enhance your listening experience. It detects emotions from your voice and plays songs that match your mood! 🎶
+Cosmora – Mood-Based Spotify Music Player
 
-🚀 Features
+Cosmora is an iOS app that enhances user well-being by integrating Spotify with mood detection. It uses voice-based emotion recognition to analyze the user’s mood and plays Spotify songs accordingly.
 
-✅ Mood Capture - Records your voice to analyze and detect emotions.
-🚧 Emotional Compass - (Coming soon) A deep dive into your emotional patterns.
-🚧 Meditation - (Coming soon) Guided meditation for emotional well-being.
-🚧 Sentiment Beats - (Coming soon) Personalized playlists based on emotions.
+ How it Works:
+1️⃣ The user records their voice using the Mood Capture feature.
+2️⃣ The app analyzes the emotional tone using AI.
+3️⃣ Based on the detected mood, Spotify suggests and plays music.
 
-At the bottom, there's a Spotify Player button, seamlessly integrated within Cosmora, allowing you to play mood-based music from Spotify! 🎧
+🔗 Seamlessly connects your Spotify account with Cosmora to create an AI-driven music experience.
 
+Key Features
+
+✅  Mood Capture: Analyze emotions through voice recording.
+✅  Sentiment Beats: Spotify integration for mood-based music playback.
+✅  Integrated Spotify Player: Control music directly within the app.
+✅  Emotional Compass: (Under construction) Advanced mood tracking.
+✅  Meditation Mode: (Under construction) Guided relaxation.
+✅  Future Enhancements: More AI-powered insights & custom music recommendations.
+
+Technology Stack
+
+Language: Swift
+Frameworks: UIKit, AVFoundation, CoreML
+AI & Machine Learning: Voice-based Emotion Detection Model
+Music API: Spotify API for song recommendations & playback
 App Flow
 
-1️⃣ Launch Screen → Displays the app logo while initializing.
-2️⃣ Home Screen → Offers four options:
+1️⃣ Launch Screen → Welcomes the user to Cosmora.
+2️⃣ Home Screen → Displays four options:
 
-Mood Capture (Detects emotion from voice)
-Emotional Compass (Coming soon)
-Meditation (Coming soon)
-Sentiment Beats (Coming soon)
+    Mood Capture 🎤 (Voice-based emotion analysis)
+    Emotional Compass 🧭 (Under development)
+    Meditation Mode 🧘 (Under development)
+    Sentiment Beats 🎵 (Under development)
+    
+3️⃣ Spotify Player (Bottom Tab) 
+A central button opens an integrated Spotify player to play mood-based songs.
+Screenshots
 
-3️⃣ Spotify Player Button 🎵 → Integrated Spotify player in Cosmora.
+<p align="center"> <img src="docs/launchscreen_one.png" width="300" alt="Home Screen"> <img src="docs/launchscreen_2.png" width="300" alt="Mood Capture"> <img src="docs/launchscreen_3.png" width="300" alt="Spotify Player"> </p>
+Installation & Setup
 
-Tech Stack
-Swift (UIKit) 
-CoreML (For emotion detection) 
-Spotify SDK (For music playback) 
-AVFoundation (For voice recording) 
+Clone the repository and open the project in Xcode:
 
- Screenshots
+git clone https://github.com/programmerwali/Cosmora.git
+cd Cosmora
+open Cosmora.xcodeproj
+Spotify API Setup
 
-![Home Screen](docs/launchscreen_one.png)  
-*Cosmora Home Screen with four options*  
+Sign up for a Spotify Developer Account: Spotify Developer
+Create an app in the Spotify Developer Dashboard.
+Copy the Client ID & Secret into the project’s configuration.
+Ensure Spotify authentication is handled properly.
+Future Enhancements
 
-![Mood Capture](docs/launchscreen_2.png)  
-*Mood detection in action!*  
+🚀 Improved AI emotion detection for better accuracy.
+🎵 Custom playlists based on historical mood trends.
+🌎 Social sharing to connect users with similar music preferences.
+📊 Mood insights dashboard for tracking emotions over time.
 
-![Spotify Player](docs/launchscreen_3.png)  
-*Integrated Spotify player for mood-based songs*  
 
-
-📥 Installation & Setup
-
-Clone the repository:
-git clone https://github.com/yourusername/cosmora.git
-cd cosmora
-Open Cosmora.xcodeproj in Xcode.
-Install dependencies (if any).
-Run the app on a simulator or a real device.
-📌 Future Updates
-
-🔹 Enhance Emotion AI Model for better accuracy.
-🔹 Expand Mood-Based Features like journaling & mindfulness exercises.
-🔹 Improve UI/UX with animations and seamless navigation.
 
 💡 Contributing
 
