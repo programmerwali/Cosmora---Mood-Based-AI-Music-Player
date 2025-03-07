@@ -9,13 +9,27 @@
 /* Begin PBXBuildFile section */
 		3E38E1502D705F010060331C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E14F2D705F010060331C /* AppDelegate.swift */; };
 		3E38E1522D705F010060331C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1512D705F010060331C /* SceneDelegate.swift */; };
-		3E38E1542D705F010060331C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1532D705F010060331C /* ViewController.swift */; };
+		3E38E1542D705F010060331C /* HomeDasboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1532D705F010060331C /* HomeDasboardViewController.swift */; };
 		3E38E1572D705F010060331C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3E38E1562D705F010060331C /* Base */; };
 		3E38E1592D705F030060331C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E38E1582D705F030060331C /* Assets.xcassets */; };
 		3E38E15C2D705F030060331C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3E38E15B2D705F030060331C /* Base */; };
 		3E38E1672D705F030060331C /* SoundWithSpotifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1662D705F030060331C /* SoundWithSpotifyTests.swift */; };
 		3E38E1712D705F040060331C /* SoundWithSpotifyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1702D705F040060331C /* SoundWithSpotifyUITests.swift */; };
 		3E38E1732D705F040060331C /* SoundWithSpotifyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1722D705F040060331C /* SoundWithSpotifyUITestsLaunchTests.swift */; };
+		3E38E1802D7079260060331C /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E17F2D7079260060331C /* OnboardingPage.swift */; };
+		3E38E1822D7079450060331C /* OnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1812D7079450060331C /* OnboardingCell.swift */; };
+		3E38E1842D7079960060331C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1832D7079960060331C /* OnboardingViewController.swift */; };
+		3E38E1862D708CA90060331C /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1852D708CA90060331C /* ActivityCell.swift */; };
+		3E38E1882D708DCB0060331C /* FilterSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1872D708DCB0060331C /* FilterSearchBar.swift */; };
+		3E38E18A2D70D6220060331C /* SpotifyAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1892D70D6220060331C /* SpotifyAuthManager.swift */; };
+		3EBC33082D74E930004D75D1 /* SpotifyiOS in Frameworks */ = {isa = PBXBuildFile; productRef = 3EBC33072D74E930004D75D1 /* SpotifyiOS */; };
+		3EBC330A2D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBC33092D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift */; };
+		3EBC330C2D74EFF2004D75D1 /* emotionTestRecognizer.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3EBC330B2D74EFF1004D75D1 /* emotionTestRecognizer.mlmodel */; };
+		3EC6D63F2D73326D008528D4 /* SpotifyAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D63E2D73326D008528D4 /* SpotifyAPIManager.swift */; };
+		3EC6D6412D7332D7008528D4 /* SpotifyPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D6402D7332D7008528D4 /* SpotifyPlayerViewController.swift */; };
+		3EC6D6432D733323008528D4 /* SpotifyConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D6422D733323008528D4 /* SpotifyConfiguration.swift */; };
+		3EC6D6452D733704008528D4 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D6442D733704008528D4 /* Notifications.swift */; };
+		3EC6D6472D73374D008528D4 /* SpotifyPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D6462D73374D008528D4 /* SpotifyPlayerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +53,7 @@
 		3E38E14C2D705F010060331C /* SoundWithSpotify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundWithSpotify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E38E14F2D705F010060331C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E38E1512D705F010060331C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3E38E1532D705F010060331C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3E38E1532D705F010060331C /* HomeDasboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDasboardViewController.swift; sourceTree = "<group>"; };
 		3E38E1562D705F010060331C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3E38E1582D705F030060331C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E38E15B2D705F030060331C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +63,19 @@
 		3E38E16C2D705F030060331C /* SoundWithSpotifyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundWithSpotifyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E38E1702D705F040060331C /* SoundWithSpotifyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundWithSpotifyUITests.swift; sourceTree = "<group>"; };
 		3E38E1722D705F040060331C /* SoundWithSpotifyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundWithSpotifyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		3E38E17F2D7079260060331C /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
+		3E38E1812D7079450060331C /* OnboardingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCell.swift; sourceTree = "<group>"; };
+		3E38E1832D7079960060331C /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		3E38E1852D708CA90060331C /* ActivityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
+		3E38E1872D708DCB0060331C /* FilterSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSearchBar.swift; sourceTree = "<group>"; };
+		3E38E1892D70D6220060331C /* SpotifyAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAuthManager.swift; sourceTree = "<group>"; };
+		3EBC33092D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceEmotionDetectorViewController.swift; sourceTree = "<group>"; };
+		3EBC330B2D74EFF1004D75D1 /* emotionTestRecognizer.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = emotionTestRecognizer.mlmodel; sourceTree = "<group>"; };
+		3EC6D63E2D73326D008528D4 /* SpotifyAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPIManager.swift; sourceTree = "<group>"; };
+		3EC6D6402D7332D7008528D4 /* SpotifyPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyPlayerViewController.swift; sourceTree = "<group>"; };
+		3EC6D6422D733323008528D4 /* SpotifyConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyConfiguration.swift; sourceTree = "<group>"; };
+		3EC6D6442D733704008528D4 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		3EC6D6462D73374D008528D4 /* SpotifyPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyPlayerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EBC33082D74E930004D75D1 /* SpotifyiOS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,9 +127,22 @@
 		3E38E14E2D705F010060331C /* SoundWithSpotify */ = {
 			isa = PBXGroup;
 			children = (
+				3EBC330B2D74EFF1004D75D1 /* emotionTestRecognizer.mlmodel */,
+				3E38E1892D70D6220060331C /* SpotifyAuthManager.swift */,
+				3EC6D6422D733323008528D4 /* SpotifyConfiguration.swift */,
+				3EC6D6402D7332D7008528D4 /* SpotifyPlayerViewController.swift */,
+				3EC6D6462D73374D008528D4 /* SpotifyPlayerManager.swift */,
+				3EC6D63E2D73326D008528D4 /* SpotifyAPIManager.swift */,
 				3E38E14F2D705F010060331C /* AppDelegate.swift */,
+				3EC6D6442D733704008528D4 /* Notifications.swift */,
 				3E38E1512D705F010060331C /* SceneDelegate.swift */,
-				3E38E1532D705F010060331C /* ViewController.swift */,
+				3E38E1532D705F010060331C /* HomeDasboardViewController.swift */,
+				3EBC33092D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift */,
+				3E38E1872D708DCB0060331C /* FilterSearchBar.swift */,
+				3E38E1852D708CA90060331C /* ActivityCell.swift */,
+				3E38E1832D7079960060331C /* OnboardingViewController.swift */,
+				3E38E17F2D7079260060331C /* OnboardingPage.swift */,
+				3E38E1812D7079450060331C /* OnboardingCell.swift */,
 				3E38E1552D705F010060331C /* Main.storyboard */,
 				3E38E1582D705F030060331C /* Assets.xcassets */,
 				3E38E15A2D705F030060331C /* LaunchScreen.storyboard */,
@@ -143,6 +184,9 @@
 			dependencies = (
 			);
 			name = SoundWithSpotify;
+			packageProductDependencies = (
+				3EBC33072D74E930004D75D1 /* SpotifyiOS */,
+			);
 			productName = SoundWithSpotify;
 			productReference = 3E38E14C2D705F010060331C /* SoundWithSpotify.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +259,9 @@
 				Base,
 			);
 			mainGroup = 3E38E1432D705F010060331C;
+			packageReferences = (
+				3EBC33062D74E930004D75D1 /* XCRemoteSwiftPackageReference "ios-sdk" */,
+			);
 			productRefGroup = 3E38E14D2D705F010060331C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -258,9 +305,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E38E1542D705F010060331C /* ViewController.swift in Sources */,
+				3E38E1542D705F010060331C /* HomeDasboardViewController.swift in Sources */,
+				3E38E1882D708DCB0060331C /* FilterSearchBar.swift in Sources */,
+				3E38E1842D7079960060331C /* OnboardingViewController.swift in Sources */,
+				3EC6D63F2D73326D008528D4 /* SpotifyAPIManager.swift in Sources */,
+				3EC6D6412D7332D7008528D4 /* SpotifyPlayerViewController.swift in Sources */,
+				3EC6D6452D733704008528D4 /* Notifications.swift in Sources */,
+				3E38E1822D7079450060331C /* OnboardingCell.swift in Sources */,
 				3E38E1502D705F010060331C /* AppDelegate.swift in Sources */,
+				3EBC330C2D74EFF2004D75D1 /* emotionTestRecognizer.mlmodel in Sources */,
+				3EC6D6432D733323008528D4 /* SpotifyConfiguration.swift in Sources */,
+				3E38E1862D708CA90060331C /* ActivityCell.swift in Sources */,
+				3E38E18A2D70D6220060331C /* SpotifyAuthManager.swift in Sources */,
 				3E38E1522D705F010060331C /* SceneDelegate.swift in Sources */,
+				3E38E1802D7079260060331C /* OnboardingPage.swift in Sources */,
+				3EBC330A2D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift in Sources */,
+				3EC6D6472D73374D008528D4 /* SpotifyPlayerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +505,7 @@
 				DEVELOPMENT_TEAM = 3LM2Y8Y8P2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoundWithSpotify/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Cosmora;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -455,7 +516,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cp.SoundWithSpotify;
+				PRODUCT_BUNDLE_IDENTIFIER = cp.Cosmora;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -473,6 +534,7 @@
 				DEVELOPMENT_TEAM = 3LM2Y8Y8P2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoundWithSpotify/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Cosmora;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -483,7 +545,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cp.SoundWithSpotify;
+				PRODUCT_BUNDLE_IDENTIFIER = cp.Cosmora;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -607,6 +669,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3EBC33062D74E930004D75D1 /* XCRemoteSwiftPackageReference "ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/spotify/ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3EBC33072D74E930004D75D1 /* SpotifyiOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3EBC33062D74E930004D75D1 /* XCRemoteSwiftPackageReference "ios-sdk" */;
+			productName = SpotifyiOS;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3E38E1442D705F010060331C /* Project object */;
 }
