@@ -85,7 +85,7 @@ Clone the repository and open the project in Xcode:
 ```bash
 git clone https://github.com/programmerwali/Cosmora---Mood-Based-AI-Music-Player
 cd Cosmora---Mood-Based-AI-Music-Player
-open Cosmora---Mood-Based-AI-Music-Player.xcodeproj
+open SoundWithSpotify.xcodeproj
 ```
 
 
