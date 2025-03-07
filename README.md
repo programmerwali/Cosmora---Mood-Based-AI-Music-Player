@@ -38,7 +38,23 @@ App Flow
 A central button opens an integrated Spotify player to play mood-based songs.
 Screenshots
 
-<p align="center"> <img src="docs/launchscreen_one.png" width="300" alt="Home Screen"> <img src="docs/launchscreen_2.png" width="300" alt="Mood Capture"> <img src="docs/launchscreen_3.png" width="300" alt="Spotify Player"> </p>
+## Screenshots
+
+### Home Screen
+![Home Screen](homescreen.png)
+
+### Emotion Detection
+![Emotion Detection](emotiondetection.png)
+
+### Launch Screen
+![Launch Screen](launchscreen_2.png)
+
+### Loading Screen
+![Loading Screen](loadingscreen.png)
+
+### Music Screen
+![Music Screen](musicscreen.png)
+
 Installation & Setup
 
 Clone the repository and open the project in Xcode:
