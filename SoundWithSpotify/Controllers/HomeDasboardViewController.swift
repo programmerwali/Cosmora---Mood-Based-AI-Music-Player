@@ -140,11 +140,6 @@ class HomeDashboardViewController: UIViewController {
         searchBar.layer.cornerRadius = 5
         searchBar.clipsToBounds = true
         
-//        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
-//            textField.backgroundColor = .white
-//            textField.textColor = .gray
-//        }
-        
         headerView.addSubview(searchBar)
     }
     

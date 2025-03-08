@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import AVFoundation
 
-// This is a simple implementation. For full Spotify streaming, you'd need to use SPTAudioStreamingController from the Spotify iOS SDK
 
 class SpotifyPlayerManager {
     static let shared = SpotifyPlayerManager()

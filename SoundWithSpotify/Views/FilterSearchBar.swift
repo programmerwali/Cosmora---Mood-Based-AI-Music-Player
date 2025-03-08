@@ -25,7 +25,7 @@ class FilterSearchBar: UIView, UITextFieldDelegate {
         textField.placeholder = "Search marital status..."
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.backgroundColor = .clear
-        textField.clearButtonMode = .never // Remove default clear button
+        textField.clearButtonMode = .never // Removes default clear button
         textField.returnKeyType = .search
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -61,7 +61,7 @@ class FilterSearchBar: UIView, UITextFieldDelegate {
             textField.topAnchor.constraint(equalTo: topAnchor),
             textField.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            // Search icon (now on the right)
+            // Search icon
             iconImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: 20),
@@ -81,7 +81,6 @@ class FilterSearchBar: UIView, UITextFieldDelegate {
         textField.placeholder = placeholder
     }
     
-    // Add search functionality
     var textDidChangeHandler: ((String) -> Void)?
     var searchButtonClickedHandler: ((String) -> Void)?
     

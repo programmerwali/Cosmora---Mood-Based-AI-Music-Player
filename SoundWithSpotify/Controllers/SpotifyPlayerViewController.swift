@@ -154,7 +154,7 @@ class SpotifyPlayerViewController: UIViewController {
         progressSlider.minimumValue = 0.0
         progressSlider.maximumValue = 1.0
         progressSlider.value = 0.0
-        progressSlider.tintColor = .systemGreen
+        progressSlider.tintColor = .systemPurple
         progressSlider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
         view.addSubview(progressSlider)
         

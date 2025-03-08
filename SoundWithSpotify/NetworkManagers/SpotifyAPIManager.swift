@@ -51,8 +51,7 @@ class SpotifyAPIManager {
                         if let album = item["album"] as? [String: Any],
                            let images = album["images"] as? [[String: Any]],
                            let imageURL = images.first?["url"] as? String {
-                            // In a real app, you would load this image asynchronously
-                            // For now, we'll leave albumArt as nil and implement image loading separately
+                     
                         }
 
                         return Track(id: id, name: name, artist: artistName, albumArt: albumArt)
@@ -227,25 +226,4 @@ class SpotifyAPIManager {
     }
 }
 
-// MARK: - Track Model
-class Track {
-    let id: String
-    let name: String
-    let artist: String
-    var albumArt: UIImage?
-    
-    
-    init(id: String, name: String, artist: String, albumArt: UIImage?) {
-        self.id = id
-        self.name = name
-        self.artist = artist
-        self.albumArt = albumArt
-    }
-    
-    func loadAlbumArt(completion: @escaping () -> Void) {
-        SpotifyAPIManager.shared.loadAlbumArt(for: id) { [weak self] image in
-            self?.albumArt = image
-            completion()
-        }
-    }
-}
+
