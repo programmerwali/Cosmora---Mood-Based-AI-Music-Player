@@ -72,7 +72,8 @@ Cosmora's **AI-driven mood detection** is powered by the **RAVDESS (Ryerson Audi
 
 <p align="center">
   <img src="homescreen.png" alt="Home Screen" width="250">
-  <img src="emotiondetection.png" alt="Emotion Detection" width="250">
+  <img src="emotiondetection22.png" alt="Emotion Detection" width="250">
+  <img src="emotiondetection3.png" alt="Emotion Detection" width="250">
   <img src="musicscreen.png" alt="Music Screen" width="250">
 </p>
 
