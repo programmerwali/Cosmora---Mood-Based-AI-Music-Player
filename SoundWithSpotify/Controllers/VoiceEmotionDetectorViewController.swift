@@ -1,3 +1,4 @@
+
 //
 //  VoiceEmotionDetectorViewController.swift
 //  SoundWithSpotify
@@ -6,11 +7,9 @@
 //
 
 import UIKit
-import AVFoundation
-import SoundAnalysis
-import CoreMedia
+import Combine
 
-class VoiceEmotionDetectorViewController: UIViewController, AVAudioRecorderDelegate {
+class VoiceEmotionDetectorViewController: UIViewController {
     
     // MARK: - UI Properties
     private let contentView = UIView()
@@ -24,19 +23,11 @@ class VoiceEmotionDetectorViewController: UIViewController, AVAudioRecorderDeleg
     private let headerTitle = UILabel()
     private let gradientLayer = CAGradientLayer()
     
-    // MARK: - Audio Properties
-    private var audioRecorder: AVAudioRecorder?
-    private var isRecording = false
-    private var recordingURL: URL?
-    private var audioEngine: AVAudioEngine?
-    private var inputNode: AVAudioInputNode?
+    // MARK: - View Model
+    private let viewModel = VoiceEmotionDetectorViewModel()
     
-    // MARK: - Classification Properties
-    private var analyzer: SNAudioStreamAnalyzer?
-    private var classificationRequest: SNClassifySoundRequest?
-    
-    // MARK: - Data Properties
-    private var emotionHistory: [(emotion: String, confidence: Float, timestamp: Date)] = []
+    // MARK: - Combine
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Colors
     private let primaryPurple = UIColor(red: 0.5, green: 0.3, blue: 0.9, alpha: 1.0)
@@ -48,8 +39,7 @@ class VoiceEmotionDetectorViewController: UIViewController, AVAudioRecorderDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupAudioSession()
-        setupClassifier()
+        bindViewModel()
     }
     
     override func viewDidLayoutSubviews() {
@@ -60,6 +50,69 @@ class VoiceEmotionDetectorViewController: UIViewController, AVAudioRecorderDeleg
         // Apply rounded corners to record button
         recordButton.layer.cornerRadius = recordButton.frame.height / 2
         recordButton.clipsToBounds = true
+    }
+    
+    // MARK: - Bind ViewModel
+    private func bindViewModel() {
+        // Status message binding
+        viewModel.$statusMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] message in
+                self?.statusLabel.text = message
+            }
+            .store(in: &cancellables)
+        
+        // Recording state binding
+        viewModel.$isRecording
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isRecording in
+                guard let self = self else { return }
+                self.recordButton.isSelected = isRecording
+                
+                if isRecording {
+                    self.applyPulseAnimation()
+                } else {
+                    self.stopPulseAnimation()
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Emotion binding
+        viewModel.$currentEmotion
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] emotion in
+                self?.emotionLabel.text = emotion
+                
+                // Update the icon for the emotion
+                if emotion != "No emotion detected yet" {
+                    let iconInfo = self?.viewModel.getEmotionIcon(for: emotion)
+                    if let iconName = iconInfo?.systemName {
+                        let largeConfig = UIImage.SymbolConfiguration(pointSize: 80, weight: .regular)
+                        self?.emotionIconView.image = UIImage(systemName: iconName, withConfiguration: largeConfig)
+                        
+                        if let color = iconInfo?.color {
+                            self?.emotionIconView.tintColor = UIColor(red: color.red, green: color.green, blue: color.blue, alpha: color.alpha)
+                        }
+                    }
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Confidence binding
+        viewModel.$confidenceLevel
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] confidence in
+                self?.confidenceLabel.text = confidence
+            }
+            .store(in: &cancellables)
+        
+        // History binding
+        viewModel.$emotionHistory
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.historyTableView.reloadData()
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - UI Setup
@@ -131,7 +184,7 @@ class VoiceEmotionDetectorViewController: UIViewController, AVAudioRecorderDeleg
     }
     
     private func setupStatusLabel() {
-        statusLabel.text = "Tap to start voice analysis"
+        statusLabel.text = viewModel.statusMessage
         statusLabel.textAlignment = .center
         statusLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         statusLabel.textColor = darkPurple
@@ -150,14 +203,14 @@ class VoiceEmotionDetectorViewController: UIViewController, AVAudioRecorderDeleg
         contentView.addSubview(emotionIconView)
         
         // Emotion Label setup
-        emotionLabel.text = "No emotion detected yet"
+        emotionLabel.text = viewModel.currentEmotion
         emotionLabel.textAlignment = .center
         emotionLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
         emotionLabel.textColor = darkPurple
         contentView.addSubview(emotionLabel)
         
         // Confidence Label setup
-        confidenceLabel.text = ""
+        confidenceLabel.text = viewModel.confidenceLevel
         confidenceLabel.textAlignment = .center
         confidenceLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         confidenceLabel.textColor = UIColor.gray
@@ -253,112 +306,9 @@ class VoiceEmotionDetectorViewController: UIViewController, AVAudioRecorderDeleg
         ])
     }
     
-    // MARK: - Audio Setup
-    private func setupAudioSession() {
-        do {
-            let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.record, mode: .default)
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-        } catch {
-            statusLabel.text = "Audio session setup failed"
-            print("Audio session setup failed: \(error.localizedDescription)")
-        }
-    }
-    
-    private func setupClassifier() {
-        do {
-            let soundClassifier = try emotionTestRecognizer()
-            
-            classificationRequest = try SNClassifySoundRequest(mlModel: soundClassifier.model)
-            
-            classificationRequest?.windowDuration = CMTime(seconds: 0.975, preferredTimescale: .max)
-            classificationRequest?.overlapFactor = 0.5
-            
-            statusLabel.text = "Ready to analyze your voice"
-        } catch {
-            statusLabel.text = "Failed to load sound classification model"
-            print("Failed to load sound classification model: \(error.localizedDescription)")
-        }
-    }
-    
-    // MARK: - Recording Actions
+    // MARK: - Actions
     @objc private func recordButtonTapped() {
-        if isRecording {
-            stopRecording()
-        } else {
-            startRecording()
-        }
-    }
-    
-    private func startRecording() {
-        audioEngine = AVAudioEngine()
-        
-        guard let audioEngine = audioEngine else {
-            statusLabel.text = "Failed to initialize audio engine"
-            return
-        }
-        
-        inputNode = audioEngine.inputNode
-        
-        let recordingFormat = inputNode?.outputFormat(forBus: 0)
-        
-        guard let recordingFormat = recordingFormat else {
-            statusLabel.text = "Failed to get recording format"
-            return
-        }
-        
-        analyzer = SNAudioStreamAnalyzer(format: recordingFormat)
-        
-        guard let analyzer = analyzer, let request = classificationRequest else {
-            statusLabel.text = "Failed to set up audio analyzer"
-            return
-        }
-        
-        do {
-            try analyzer.add(request, withObserver: self)
-            
-            inputNode?.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, time in
-                self?.analyzer?.analyze(buffer, atAudioFramePosition: time.sampleTime)
-            }
-            
-            try audioEngine.start()
-            
-            isRecording = true
-            recordButton.isSelected = true
-            statusLabel.text = "Listening to your voice..."
-            
-            // Add pulse animation
-            applyPulseAnimation()
-            
-        } catch {
-            statusLabel.text = "Failed to start audio analysis"
-            print("Failed to start audio analysis: \(error.localizedDescription)")
-            stopRecording()
-        }
-    }
-    
-    private func stopRecording() {
-        guard isRecording else { return } // Prevent multiple stops
-        
-        // Remove tap on input node
-        inputNode?.removeTap(onBus: 0)
-        
-        // Stop audio engine safely
-        audioEngine?.stop()
-        audioEngine = nil
-        
-        // Remove requests from analyzer
-        if let analyzer = analyzer, let request = classificationRequest {
-            analyzer.remove(request)
-        }
-        analyzer = nil
-        
-        isRecording = false
-        recordButton.isSelected = false
-        statusLabel.text = "Voice analysis complete"
-        
-        // Stop animation
-        stopPulseAnimation()
+        viewModel.toggleRecording()
     }
     
     // MARK: - Animations
@@ -375,115 +325,18 @@ class VoiceEmotionDetectorViewController: UIViewController, AVAudioRecorderDeleg
             self.recordButton.backgroundColor = self.primaryPurple
         }
     }
-    
-    // MARK: - UI Updates
-    private func updateEmotionDisplay(emotion: String, confidence: Float) {
-        DispatchQueue.main.async {
-            self.emotionLabel.text = self.formatEmotionText(emotion)
-            self.confidenceLabel.text = "Confidence: \(Int(confidence * 100))%"
-            
-            // Add to history with most recent at the top
-            let newEntry = (emotion: emotion, confidence: confidence, timestamp: Date())
-            self.emotionHistory.insert(newEntry, at: 0)
-            self.historyTableView.reloadData()
-            
-            // Update icon based on emotion
-            self.updateEmotionIcon(for: emotion)
-        }
-    }
-    
-    private func formatEmotionText(_ emotion: String) -> String {
-        // Capitalize first letter and make the rest lowercase
-        let formatted = emotion.prefix(1).uppercased() + emotion.dropFirst().lowercased()
-        return formatted
-    }
-    
-    private func updateEmotionIcon(for emotion: String) {
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 80, weight: .regular)
-
-        switch emotion.lowercased() {
-        case "happy", "joy":
-            emotionIconView.image = UIImage(systemName: "face.smiling", withConfiguration: largeConfig)
-            emotionIconView.tintColor = UIColor(red: 1.0, green: 0.8, blue: 0.0, alpha: 1.0) // Golden
-
-        case "sad", "sadness":
-            emotionIconView.image = UIImage(systemName: "cloud.drizzle.fill", withConfiguration: largeConfig) // Represents sadness like rain
-            emotionIconView.tintColor = UIColor(red: 0.3, green: 0.5, blue: 0.8, alpha: 1.0) // Blue
-
-        case "angry", "anger":
-            emotionIconView.image = UIImage(systemName: "flame.fill", withConfiguration: largeConfig) // Fire represents rage
-            emotionIconView.tintColor = UIColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0) // Red
-
-        case "fear", "scared":
-            emotionIconView.image = UIImage(systemName: "exclamationmark.triangle.fill", withConfiguration: largeConfig) // Warning sign for fear
-            emotionIconView.tintColor = UIColor(red: 0.6, green: 0.0, blue: 0.7, alpha: 1.0) // Purple
-
-        case "surprise", "surprised":
-            emotionIconView.image = UIImage(systemName: "bolt.shield.fill", withConfiguration: largeConfig) // Shock or sudden reaction
-            emotionIconView.tintColor = UIColor(red: 1.0, green: 0.5, blue: 0.0, alpha: 1.0) // Orange
-
-        case "neutral":
-            emotionIconView.image = UIImage(systemName: "face.smiling.inverse", withConfiguration: largeConfig) // Simplest neutral expression
-            emotionIconView.tintColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0) // Gray
-
-        case "disgust", "disgusted":
-            emotionIconView.image = UIImage(systemName: "xmark.octagon.fill", withConfiguration: largeConfig) // Disgust = rejection
-            emotionIconView.tintColor = UIColor(red: 0.0, green: 0.6, blue: 0.3, alpha: 1.0) // Green
-
-        case "contempt":
-            emotionIconView.image = UIImage(systemName: "hand.thumbsdown.fill", withConfiguration: largeConfig) // Represents disapproval
-            emotionIconView.tintColor = UIColor(red: 0.5, green: 0.0, blue: 0.5, alpha: 1.0) // Purple
-
-        default:
-            emotionIconView.image = UIImage(systemName: "waveform.circle.fill", withConfiguration: largeConfig) // Default icon
-            emotionIconView.tintColor = primaryPurple
-        }
-    }
-
-}
-
-// MARK: - SNResultsObserving
-extension VoiceEmotionDetectorViewController: SNResultsObserving {
-    func request(_ request: SNRequest, didProduce result: SNResult) {
-        guard let result = result as? SNClassificationResult else { return }
-        
-        // Get the most likely classification
-        var bestClassification: SNClassification? = nil
-        
-        // Find the classification with the highest confidence
-        for classification in result.classifications {
-            if let currentBest = bestClassification {
-                if classification.confidence > currentBest.confidence {
-                    bestClassification = classification
-                }
-            } else {
-                bestClassification = classification
-            }
-        }
-        
-        // Update the UI with the detected emotion
-        if let classification = bestClassification {
-            updateEmotionDisplay(emotion: classification.identifier, confidence: Float(classification.confidence))
-        }
-    }
-    
-    func request(_ request: SNRequest, didFailWithError error: Error) {
-        DispatchQueue.main.async {
-            self.statusLabel.text = "Analysis error: \(error.localizedDescription)"
-        }
-    }
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
 extension VoiceEmotionDetectorViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return emotionHistory.count
+        return viewModel.emotionHistory.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "EmotionCell", for: indexPath) as! EmotionHistoryCell
         
-        let entry = emotionHistory[indexPath.row]
+        let entry = viewModel.emotionHistory[indexPath.row]
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .medium
         
@@ -501,4 +354,3 @@ extension VoiceEmotionDetectorViewController: UITableViewDataSource, UITableView
         return 70
     }
 }
-

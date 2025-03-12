@@ -1,3 +1,4 @@
+
 //
 //  ViewController.swift
 //  SoundWithSpotify
@@ -9,6 +10,10 @@ import UIKit
 
 class HomeDashboardViewController: UIViewController {
     
+    // MARK: - Properties
+    
+    private let viewModel = HomeDashboardViewModel()
+    
     // UI Components
     private let headerView = UIView()
     private let titleLabel = UILabel()
@@ -16,7 +21,6 @@ class HomeDashboardViewController: UIViewController {
     private let profileImageView = UIImageView()
     private let greetingLabel = UILabel()
     private let nameLabel = UILabel()
-   // private let searchBar = UISearchBar()
     private let searchBar = FilterSearchBar()
     private let collectionView: UICollectionView
     private let tabBar = UITabBar()
@@ -45,6 +49,7 @@ class HomeDashboardViewController: UIViewController {
         
         super.init(coder: coder)
     }
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -53,27 +58,25 @@ class HomeDashboardViewController: UIViewController {
         setupAddButton()
         
         // Register for auth notification
-           NotificationCenter.default.addObserver(self,
-                                                 selector: #selector(authCompleted(_:)),
-                                                 name: .spotifyAuthCompleted,
-                                                 object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(authCompleted(_:)),
+                                               name: .spotifyAuthCompleted,
+                                               object: nil)
     }
     
     @objc private func authCompleted(_ notification: Notification) {
-        guard let success = notification.userInfo?["success"] as? Bool, success else {
-            // Authentication failed
-            let alert = UIAlertController(title: "Authentication Failed",
-                                         message: "Failed to sign in with Spotify.",
-                                         preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
+        guard let success = notification.userInfo?["success"] as? Bool else { return }
+        
+        if let alert = viewModel.handleSpotifyAuthResult(success: success) {
             present(alert, animated: true)
             return
         }
         
-        // Auth succeeded, now present the player
-        let playerVC = SpotifyPlayerViewController()
-        playerVC.modalPresentationStyle = .fullScreen
-        present(playerVC, animated: true)
+        if success {
+            let playerVC = viewModel.createSpotifyPlayerViewController()
+            playerVC.modalPresentationStyle = .fullScreen
+            present(playerVC, animated: true)
+        }
     }
     
     // MARK: - UI Setup
@@ -88,7 +91,13 @@ class HomeDashboardViewController: UIViewController {
         setupConstraints()
     }
     
-    
+//    private func setupAddButton() {
+//        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+//    }
+//    
+//    @objc private func addButtonTapped() {
+//        // Handle add button tap - could be implemented in view model if needed
+//    }
     
     private func setupHeaderView() {
         // Header Container
@@ -120,13 +129,13 @@ class HomeDashboardViewController: UIViewController {
         headerView.addSubview(profileImageView)
         
         // Greeting Label
-        greetingLabel.text = "Good morning!"
+        greetingLabel.text = viewModel.greeting
         greetingLabel.textColor = .white
         greetingLabel.font = UIFont.systemFont(ofSize: 16)
         headerView.addSubview(greetingLabel)
         
         // Name Label
-        nameLabel.text = "Wali K" //hardcoded for now
+        nameLabel.text = viewModel.userName
         nameLabel.textColor = UIColor(white: 0.2, alpha: 1.0)
         nameLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         headerView.addSubview(nameLabel)
@@ -134,8 +143,6 @@ class HomeDashboardViewController: UIViewController {
     
     private func setupSearchBar() {
         searchBar.textField.placeholder = "Want to search something..."
-       // searchBar.searchBarStyle = .minimal
-            //searchBar.backgroundImage = UIImage()
         searchBar.backgroundColor = .white
         searchBar.layer.cornerRadius = 5
         searchBar.clipsToBounds = true
@@ -174,6 +181,7 @@ class HomeDashboardViewController: UIViewController {
     }
     
     private func setupConstraints() {
+        // Same constraints as before
         headerView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         menuButton.translatesAutoresizingMaskIntoConstraints = false
@@ -246,41 +254,28 @@ class HomeDashboardViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension HomeDashboardViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return viewModel.numberOfActivities()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ActivityCell", for: indexPath) as! ActivityCell
         
-        switch indexPath.item {
-        case 0:
-            cell.configure(with: "Mood Capture", imageName: "mooddetect")
-        case 1:
-            cell.configure(with: "Emotional Compass", imageName: "moodcompass")
-        case 2:
-            cell.configure(with: "Meditation", imageName: "moodchange")
-        case 3:
-            cell.configure(with: "Sentiment Beats", imageName: "sentimentbeats")
-        default:
-            break
+        if let activity = viewModel.activity(at: indexPath.item) {
+            cell.configure(with: activity.title, imageName: activity.imageName)
         }
         
         return cell
     }
-    
-    
+}
+
+// MARK: - UICollectionViewDelegate
+extension HomeDashboardViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Cell tapped at index: \(indexPath.item)")
-        if indexPath.item == 0 {
-            print("Attempting to navigate to voice emotion controller")
-            let voiceVC = VoiceEmotionDetectorViewController()
-            voiceVC.modalPresentationStyle = .fullScreen // or .pageSheet
-            present(voiceVC, animated: true)
+        if let viewController = viewModel.handleActivitySelection(at: indexPath.item) {
+            viewController.modalPresentationStyle = .fullScreen
+            present(viewController, animated: true)
         }
     }
-    
-
-
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -290,4 +285,3 @@ extension HomeDashboardViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width, height: width)
     }
 }
-

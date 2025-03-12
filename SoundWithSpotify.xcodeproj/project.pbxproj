@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E3219842D817B3C002FC66F /* VoiceEmotionDetectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3219832D817B3C002FC66F /* VoiceEmotionDetectionViewModel.swift */; };
+		3E3219862D817C13002FC66F /* HomeDashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3219852D817C13002FC66F /* HomeDashboardViewModel.swift */; };
 		3E38E1502D705F010060331C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E14F2D705F010060331C /* AppDelegate.swift */; };
 		3E38E1522D705F010060331C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1512D705F010060331C /* SceneDelegate.swift */; };
 		3E38E1542D705F010060331C /* HomeDasboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1532D705F010060331C /* HomeDasboardViewController.swift */; };
@@ -53,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3E3219832D817B3C002FC66F /* VoiceEmotionDetectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceEmotionDetectionViewModel.swift; sourceTree = "<group>"; };
+		3E3219852D817C13002FC66F /* HomeDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDashboardViewModel.swift; sourceTree = "<group>"; };
 		3E38E14C2D705F010060331C /* SoundWithSpotify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundWithSpotify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E38E14F2D705F010060331C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E38E1512D705F010060331C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -229,6 +233,8 @@
 		3EEFC86A2D7CB4FC00199F9C /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				3E3219832D817B3C002FC66F /* VoiceEmotionDetectionViewModel.swift */,
+				3E3219852D817C13002FC66F /* HomeDashboardViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -372,6 +378,7 @@
 			files = (
 				3EEFC85F2D7CB27900199F9C /* EmotionHistoryCell.swift in Sources */,
 				3E38E1542D705F010060331C /* HomeDasboardViewController.swift in Sources */,
+				3E3219862D817C13002FC66F /* HomeDashboardViewModel.swift in Sources */,
 				3E38E1882D708DCB0060331C /* FilterSearchBar.swift in Sources */,
 				3E38E1842D7079960060331C /* OnboardingViewController.swift in Sources */,
 				3EC6D63F2D73326D008528D4 /* SpotifyAPIManager.swift in Sources */,
@@ -389,6 +396,7 @@
 				3E38E1802D7079260060331C /* OnboardingPage.swift in Sources */,
 				3EBC330A2D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift in Sources */,
 				3EC6D6472D73374D008528D4 /* SpotifyPlayerManager.swift in Sources */,
+				3E3219842D817B3C002FC66F /* VoiceEmotionDetectionViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
