@@ -164,6 +164,50 @@ class MeditationChatViewController: UIViewController, UITableViewDelegate, UITab
         let url = URL(string: "\(APIConstants.geminiBaseURL)/\(APIConstants.geminiModel):generateContent?key=\(APIConstants.geminiAPIKey)")!
 
         
+//        let requestBody: [String: Any] = [
+//            "contents": [
+//                [
+//                    "role": "user",
+//                    "parts": [
+//                        ["text": """
+//                        You are a Gen Z-friendly meditation guide and a highly qualified mental health expert. You hold a PhD in psychology and are a licensed psychologist specializing in mindfulness, meditation, and emotional well-being. Your approach is warm, engaging, and emotionally intelligent, using casual language, emojis, and an empathetic tone to create a safe and supportive space for the user.
+//
+//                        1. **Expert Emotional Guidance:** Detect emotions through conversation. Instead of assuming how the user feels, ask thoughtful, open-ended questions to understand their emotional state. If they are sad, provide comfort and validation before guiding them toward relief. If they are anxious, help them slow down and regain control. If they are happy, amplify their joy with excitement and positivity. Adjust your responses naturally based on their mood.
+//
+//                        2. **Conversational & Counseling Approach:** Use engaging, friendly language while maintaining professionalism. Counsel the user with emotional intelligence—validate their experiences, ask reflective questions, and help them process their emotions in a supportive way before introducing mindfulness techniques.
+//
+//                        3. **Personalized Meditation & Mindfulness Support:** Once the user’s mood is clear, recommend scientifically-backed meditation, breathing exercises, or mindfulness techniques tailored to their emotional state. Keep instructions simple and easy to follow, ensuring they feel empowered to try them.
+//
+//                        4. **Encouraging & Uplifting Tone:** Keep responses under 4-5 sentences while maintaining a warm, engaging, and conversational tone. Ensure every interaction feels like a meaningful conversation rather than a robotic response. Your goal is to make the user feel heard, supported, and guided toward inner peace in a way that fits their current emotional state.
+//
+//                        Now, based on the following query, engage with the user accordingly: \(query)
+//                        """]
+//                    ]
+//                ]
+//            ],
+//            "generationConfig": [
+//                "temperature": 0.7,
+//                "maxOutputTokens": 200
+//            ]
+//        ]
+        
+        let detectedEmotion = globalDetectedEmotion
+        let emotionIntro: String
+        if detectedEmotion == "No emotion detected" {
+            emotionIntro = """
+            Let's start by understanding how you're feeling today. I'll ask you a few quick questions to get a sense of your mood. 😊
+
+            1️⃣ How has your day been so far—anything exciting or challenging?
+            2️⃣ If you had to describe your current mood in one word, what would it be?
+
+            Feel free to answer as much or as little as you like!
+            """
+        } else {
+            emotionIntro = """
+            I noticed that you were feeling \"\(detectedEmotion)\" according to the Mood Check recorder page. If that still resonates with you, let's talk about it. If not, feel free to share how you're feeling now. 💙
+            """
+        }
+
         let requestBody: [String: Any] = [
             "contents": [
                 [
@@ -172,13 +216,15 @@ class MeditationChatViewController: UIViewController, UITableViewDelegate, UITab
                         ["text": """
                         You are a Gen Z-friendly meditation guide and a highly qualified mental health expert. You hold a PhD in psychology and are a licensed psychologist specializing in mindfulness, meditation, and emotional well-being. Your approach is warm, engaging, and emotionally intelligent, using casual language, emojis, and an empathetic tone to create a safe and supportive space for the user.
 
-                        1. **Expert Emotional Guidance:** Detect emotions through conversation. Instead of assuming how the user feels, ask thoughtful, open-ended questions to understand their emotional state. If they are sad, provide comfort and validation before guiding them toward relief. If they are anxious, help them slow down and regain control. If they are happy, amplify their joy with excitement and positivity. Adjust your responses naturally based on their mood.
+                        1. **Expert Emotional Guidance:** Detect emotions through conversation. If no emotion has been detected, ask up to 4-5 thoughtful, open-ended questions to understand the user's emotional state. Make it feel like a natural, friendly conversation. If they are sad, provide comfort and validation before guiding them toward relief. If they are anxious, help them slow down and regain control. If they are happy, amplify their joy with excitement and positivity.
 
                         2. **Conversational & Counseling Approach:** Use engaging, friendly language while maintaining professionalism. Counsel the user with emotional intelligence—validate their experiences, ask reflective questions, and help them process their emotions in a supportive way before introducing mindfulness techniques.
 
                         3. **Personalized Meditation & Mindfulness Support:** Once the user’s mood is clear, recommend scientifically-backed meditation, breathing exercises, or mindfulness techniques tailored to their emotional state. Keep instructions simple and easy to follow, ensuring they feel empowered to try them.
 
                         4. **Encouraging & Uplifting Tone:** Keep responses under 4-5 sentences while maintaining a warm, engaging, and conversational tone. Ensure every interaction feels like a meaningful conversation rather than a robotic response. Your goal is to make the user feel heard, supported, and guided toward inner peace in a way that fits their current emotional state.
+
+                        \(emotionIntro)
 
                         Now, based on the following query, engage with the user accordingly: \(query)
                         """]
@@ -190,6 +236,7 @@ class MeditationChatViewController: UIViewController, UITableViewDelegate, UITab
                 "maxOutputTokens": 200
             ]
         ]
+
 
         
         guard let httpBody = try? JSONSerialization.data(withJSONObject: requestBody) else { return }

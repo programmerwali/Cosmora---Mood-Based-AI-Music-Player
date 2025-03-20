@@ -41,14 +41,25 @@ class VoiceEmotionDetectorViewController: UIViewController {
         setupUI()
         bindViewModel()
         
-
-        let backButton = UIBarButtonItem(
-              image: UIImage(systemName: "chevron.left"),
-              style: .plain,
-              target: self,
-              action: #selector(goBack)
-          )
-        navigationItem.leftBarButtonItem = backButton
+        addBackButton()
+    }
+    
+    func addBackButton() {
+        let backButton = UIButton(type: .system)
+        let chevronImage = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysTemplate)
+        
+        backButton.setImage(chevronImage, for: .normal)
+        backButton.tintColor = .white
+        backButton.sizeToFit()
+        backButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backButton)
+        
+        NSLayoutConstraint.activate([
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
+        ])
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,7 +73,7 @@ class VoiceEmotionDetectorViewController: UIViewController {
     }
     
     @objc private func goBack() {
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Bind ViewModel
