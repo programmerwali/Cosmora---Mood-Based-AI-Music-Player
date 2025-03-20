@@ -40,6 +40,15 @@ class VoiceEmotionDetectorViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
+        
+
+        let backButton = UIBarButtonItem(
+              image: UIImage(systemName: "chevron.left"),
+              style: .plain,
+              target: self,
+              action: #selector(goBack)
+          )
+        navigationItem.leftBarButtonItem = backButton
     }
     
     override func viewDidLayoutSubviews() {
@@ -50,6 +59,10 @@ class VoiceEmotionDetectorViewController: UIViewController {
         // Apply rounded corners to record button
         recordButton.layer.cornerRadius = recordButton.frame.height / 2
         recordButton.clipsToBounds = true
+    }
+    
+    @objc private func goBack() {
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Bind ViewModel
