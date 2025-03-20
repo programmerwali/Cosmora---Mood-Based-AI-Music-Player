@@ -12,20 +12,26 @@ import SoundAnalysis
 import CoreMedia
 import Combine
 
+// Global variable to store the detected emotion
+var globalDetectedEmotion: String = "No emotion detected"
+var globalConfidenceLevel: Float = 0.0
+
 class VoiceEmotionDetectorViewModel: NSObject {
     
     // MARK: - Published Properties
     @Published var isRecording = false
-    @Published var statusMessage = "Tap to start voice analysis"
+    @Published var statusMessage = "Tap to start 30-second voice recording"
     @Published var currentEmotion = "No emotion detected yet"
     @Published var confidenceLevel = ""
     @Published var emotionHistory: [(emotion: String, confidence: Float, timestamp: Date)] = []
+    @Published var recordingProgress: Float = 0.0 // For tracking recording progress
     
     // MARK: - Audio Properties
     private var audioRecorder: AVAudioRecorder?
-    private var recordingURL: URL?
-    private var audioEngine: AVAudioEngine?
-    private var inputNode: AVAudioInputNode?
+    private var recordingURL: URL
+    private var recordingTimer: Timer?
+    private var recordingDuration: TimeInterval = 30.0 // 30-second recording
+    private var startTime: Date?
     
     // MARK: - Classification Properties
     private var analyzer: SNAudioStreamAnalyzer?
@@ -33,6 +39,10 @@ class VoiceEmotionDetectorViewModel: NSObject {
     
     // MARK: - Initialization
     override init() {
+        //  URL for the recording in the temporary directory
+        let tempDir = FileManager.default.temporaryDirectory
+        recordingURL = tempDir.appendingPathComponent("voiceRecording.m4a")
+        
         super.init()
         setupAudioSession()
         setupClassifier()
@@ -53,13 +63,10 @@ class VoiceEmotionDetectorViewModel: NSObject {
     private func setupClassifier() {
         do {
             let soundClassifier = try emotionTestRecognizer()
-            
             classificationRequest = try SNClassifySoundRequest(mlModel: soundClassifier.model)
-            
             classificationRequest?.windowDuration = CMTime(seconds: 0.975, preferredTimescale: .max)
             classificationRequest?.overlapFactor = 0.5
-            
-            statusMessage = "Ready to analyze your voice"
+            statusMessage = "Ready to record your voice for 30 seconds"
         } catch {
             statusMessage = "Failed to load sound classification model"
             print("Failed to load sound classification model: \(error.localizedDescription)")
@@ -76,71 +83,157 @@ class VoiceEmotionDetectorViewModel: NSObject {
     }
     
     private func startRecording() {
-        audioEngine = AVAudioEngine()
+        // Delete any previous recording
+        try? FileManager.default.removeItem(at: recordingURL)
         
-        guard let audioEngine = audioEngine else {
-            statusMessage = "Failed to initialize audio engine"
-            return
-        }
-        
-        inputNode = audioEngine.inputNode
-        
-        let recordingFormat = inputNode?.outputFormat(forBus: 0)
-        
-        guard let recordingFormat = recordingFormat else {
-            statusMessage = "Failed to get recording format"
-            return
-        }
-        
-        analyzer = SNAudioStreamAnalyzer(format: recordingFormat)
-        
-        guard let analyzer = analyzer, let request = classificationRequest else {
-            statusMessage = "Failed to set up audio analyzer"
-            return
-        }
+        // Setup recorder
+        let settings: [String: Any] = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 44100.0,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ]
         
         do {
-            try analyzer.add(request, withObserver: self)
-            
-            inputNode?.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, time in
-                self?.analyzer?.analyze(buffer, atAudioFramePosition: time.sampleTime)
-            }
-            
-            try audioEngine.start()
+            audioRecorder = try AVAudioRecorder(url: recordingURL, settings: settings)
+            audioRecorder?.delegate = self
+            audioRecorder?.record()
             
             isRecording = true
-            statusMessage = "Listening to your voice..."
+            startTime = Date()
+            statusMessage = "Recording your voice (30 seconds)..."
+            
+            // Start a timer to update progress and stop recording after 30 seconds
+            recordingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
+                guard let self = self, let startTime = self.startTime else { return }
+                
+                let elapsedTime = Date().timeIntervalSince(startTime)
+                self.recordingProgress = Float(elapsedTime / self.recordingDuration)
+                
+                if elapsedTime >= self.recordingDuration {
+                    self.stopRecording()
+                }
+            }
             
         } catch {
-            statusMessage = "Failed to start audio analysis"
-            print("Failed to start audio analysis: \(error.localizedDescription)")
-            stopRecording()
+            statusMessage = "Failed to start recording"
+            print("Failed to start recording: \(error.localizedDescription)")
         }
     }
     
     private func stopRecording() {
         guard isRecording else { return } // Prevent multiple stops
         
-        // Remove tap on input node
-        inputNode?.removeTap(onBus: 0)
+        // Stop recording timer
+        recordingTimer?.invalidate()
+        recordingTimer = nil
         
-        // Stop audio engine safely
-        audioEngine?.stop()
-        audioEngine = nil
-        
-        // Remove requests from analyzer
-        if let analyzer = analyzer, let request = classificationRequest {
-            analyzer.remove(request)
-        }
-        analyzer = nil
+        // Stop audio recorder
+        audioRecorder?.stop()
+        audioRecorder = nil
         
         isRecording = false
-        statusMessage = "Voice analysis complete"
+        recordingProgress = 1.0
+        statusMessage = "Analyzing your voice recording..."
+        
+        // Process the recorded audio
+        analyzeRecordedAudio()
+    }
+    
+    // MARK: - Audio Analysis
+    private func analyzeRecordedAudio() {
+        // Check if the recording file exists
+        guard FileManager.default.fileExists(atPath: recordingURL.path) else {
+            statusMessage = "Recording file not found"
+            return
+        }
+        
+        do {
+            // Create an audio file for analysis
+            let audioFile = try AVAudioFile(forReading: recordingURL)
+            let format = audioFile.processingFormat
+            
+            // Create analyzer with the audio format
+            analyzer = SNAudioStreamAnalyzer(format: format)
+            
+            guard let currentAnalyzer = analyzer, let request = classificationRequest else {
+                statusMessage = "Failed to set up audio analyzer"
+                return
+            }
+            
+            // Dictionary to track emotion counts
+            var emotionCounts: [String: (count: Int, totalConfidence: Float)] = [:]
+            
+            // Add request to analyzer
+            try currentAnalyzer.add(request, withObserver: self)
+            
+            // Create a buffer for reading the audio file
+            let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 1024)!
+            
+            
+            while audioFile.framePosition < audioFile.length {
+                try audioFile.read(into: buffer)
+                
+         
+                let framePosition = audioFile.framePosition
+                
+                // Analyze this chunk of audio
+                currentAnalyzer.analyze(buffer, atAudioFramePosition: framePosition)
+            }
+            
+            // Remove the request after analysis
+            if let request = classificationRequest {
+                currentAnalyzer.remove(request)
+            }
+            analyzer = nil
+            
+            // Determine the dominant emotion from emotionHistory
+            if !emotionHistory.isEmpty {
+           
+                for entry in emotionHistory {
+                    let emotion = entry.emotion
+                    let existingEntry = emotionCounts[emotion]
+                    let newCount = (existingEntry?.count ?? 0) + 1
+                    let newTotalConfidence = (existingEntry?.totalConfidence ?? 0) + entry.confidence
+                    emotionCounts[emotion] = (newCount, newTotalConfidence)
+                }
+                
+                // Find the emotion with the highest confidence average
+                var dominantEmotion = "neutral"
+                var highestAvgConfidence: Float = 0
+                
+                for (emotion, data) in emotionCounts {
+                    let avgConfidence = data.totalConfidence / Float(data.count)
+                    if avgConfidence > highestAvgConfidence {
+                        highestAvgConfidence = avgConfidence
+                        dominantEmotion = emotion
+                    }
+                }
+                
+                // Update the global variables
+                globalDetectedEmotion = dominantEmotion
+                globalConfidenceLevel = highestAvgConfidence
+                
+                // Update display
+                currentEmotion = formatEmotionText(dominantEmotion)
+                confidenceLevel = "Confidence: \(Int(highestAvgConfidence * 100))%"
+                statusMessage = "Analysis complete. Dominant emotion: \(formatEmotionText(dominantEmotion))"
+            } else {
+                statusMessage = "Analysis complete. No clear emotion detected."
+                currentEmotion = "Neutral"
+                globalDetectedEmotion = "neutral"
+                globalConfidenceLevel = 0.0
+            }
+            
+        } catch {
+            statusMessage = "Failed to analyze recording: \(error.localizedDescription)"
+            print("Failed to analyze recording: \(error.localizedDescription)")
+        }
     }
     
     // MARK: - Helpers
     func formatEmotionText(_ emotion: String) -> String {
-        // Capitalize first letter and make the rest lowercase
+
         let formatted = emotion.prefix(1).uppercased() + emotion.dropFirst().lowercased()
         return formatted
     }
@@ -178,13 +271,22 @@ class VoiceEmotionDetectorViewModel: NSObject {
     
     // MARK: - UI Updates
     private func updateEmotionDisplay(emotion: String, confidence: Float) {
-        // Update emotion and confidence values
-        currentEmotion = formatEmotionText(emotion)
-        confidenceLevel = "Confidence: \(Int(confidence * 100))%"
-        
         // Add to history with most recent at the top
         let newEntry = (emotion: emotion, confidence: confidence, timestamp: Date())
         emotionHistory.insert(newEntry, at: 0)
+    }
+}
+
+// MARK: - AVAudioRecorderDelegate
+extension VoiceEmotionDetectorViewModel: AVAudioRecorderDelegate {
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        if !flag {
+            statusMessage = "Recording failed"
+        }
+    }
+    
+    func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
+        statusMessage = "Recording error: \(error?.localizedDescription ?? "unknown error")"
     }
 }
 
@@ -193,10 +295,10 @@ extension VoiceEmotionDetectorViewModel: SNResultsObserving {
     func request(_ request: SNRequest, didProduce result: SNResult) {
         guard let result = result as? SNClassificationResult else { return }
         
-        // Get the most likely classification
+        
         var bestClassification: SNClassification? = nil
         
-        // Find the classification with the highest confidence
+      
         for classification in result.classifications {
             if let currentBest = bestClassification {
                 if classification.confidence > currentBest.confidence {
@@ -207,7 +309,7 @@ extension VoiceEmotionDetectorViewModel: SNResultsObserving {
             }
         }
         
-        // Update the UI with the detected emotion
+    
         if let classification = bestClassification {
             updateEmotionDisplay(emotion: classification.identifier, confidence: Float(classification.confidence))
         }

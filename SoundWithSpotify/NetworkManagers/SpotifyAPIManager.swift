@@ -169,7 +169,7 @@ class SpotifyAPIManager {
         task.resume()
     }
     
-    // Add a function to load album art
+    
     func loadAlbumArt(for trackId: String, completion: @escaping (UIImage?) -> Void) {
         guard let token = SpotifyAuthManager.shared.getAccessToken(),
               let url = URL(string: "https://api.spotify.com/v1/tracks/\(trackId)") else {

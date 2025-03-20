@@ -19,19 +19,20 @@ class HomeDashboardViewModel {
     // MARK: - Properties
     
     private(set) var activities: [ActivityItem] = []
-    private(set) var userName: String = "Wali K"  // Could be loaded from UserDefaults or a user service
+    private(set) var userName: String = AppConfig.userName
     
     var greeting: String {
         let hour = Calendar.current.component(.hour, from: Date())
         switch hour {
         case 0..<12:
-            return "Good morning!"
+            return AppConfig.morningGreeting
         case 12..<17:
-            return "Good afternoon!"
+            return AppConfig.afternoonGreeting
         default:
-            return "Good evening!"
+            return AppConfig.eveningGreeting
         }
     }
+
     
     // MARK: - Initialization
     
@@ -57,14 +58,14 @@ class HomeDashboardViewModel {
         case 0:
             return VoiceEmotionDetectorViewController()
         case 1:
-            // Return the appropriate view controller for Emotional Compass
-            return nil // Replace with actual implementation when available
+            // Return  view controller for Emotional Compass -  coming soon
+            return nil
         case 2:
-            // Return the appropriate view controller for Meditation
-            return nil // Replace with actual implementation when available
+            // Return  view controller for Meditation
+            return MeditationChatViewController()
         case 3:
-            // Return the appropriate view controller for Sentiment Beats
-            return nil // Replace with actual implementation when available
+            // Return  view controller for Sentiment Beats - coming soon
+            return nil
         default:
             return nil
         }
@@ -73,11 +74,11 @@ class HomeDashboardViewModel {
     func handleSpotifyAuthResult(success: Bool) -> UIAlertController? {
         if !success {
             let alert = UIAlertController(
-                title: "Authentication Failed",
-                message: "Failed to sign in with Spotify.",
+                title: AlertMessages.authFailedTitle,
+                message: AlertMessages.authFailedMessage,
                 preferredStyle: .alert
             )
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            alert.addAction(UIAlertAction(title: AlertMessages.authFailedTitle, style: .default))
             return alert
         }
         return nil
@@ -91,10 +92,11 @@ class HomeDashboardViewModel {
     
     private func loadActivities() {
         activities = [
-            ActivityItem(id: 0, title: "Mood Capture", imageName: "mooddetect"),
-            ActivityItem(id: 1, title: "Emotional Compass", imageName: "moodcompass"),
-            ActivityItem(id: 2, title: "Meditation", imageName: "moodchange"),
-            ActivityItem(id: 3, title: "Sentiment Beats", imageName: "sentimentbeats")
+            ActivityItem(id: 0, title: ActivityConstants.moodCapture, imageName: ActivityConstants.moodCaptureImage),
+            ActivityItem(id: 1, title: ActivityConstants.emotionalCompass, imageName: ActivityConstants.emotionalCompassImage),
+            ActivityItem(id: 2, title: ActivityConstants.meditationChatAI, imageName: ActivityConstants.meditationChatAIImage),
+            ActivityItem(id: 3, title: ActivityConstants.sentimentBeats, imageName: ActivityConstants.sentimentBeatsImage)
         ]
     }
+
 }

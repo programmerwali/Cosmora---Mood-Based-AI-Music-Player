@@ -57,7 +57,6 @@ class OnboardingContentViewController: UIViewController {
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
         
-        // Add to view and configure constraints
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         

@@ -22,7 +22,7 @@ class FilterSearchBar: UIView, UITextFieldDelegate {
     
     let textField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Search marital status..."
+        textField.placeholder = "Search  status..."
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.backgroundColor = .clear
         textField.clearButtonMode = .never // Removes default clear button

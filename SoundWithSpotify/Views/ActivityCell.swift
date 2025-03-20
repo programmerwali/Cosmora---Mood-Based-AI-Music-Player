@@ -68,8 +68,6 @@ class ActivityCell: UICollectionViewCell {
     
     func configure(with title: String, imageName: String) {
         titleLabel.text = title
-        
-        // For a real app, use proper images
         if let image = UIImage(named: imageName) {
             imageView.image = image
         } else {

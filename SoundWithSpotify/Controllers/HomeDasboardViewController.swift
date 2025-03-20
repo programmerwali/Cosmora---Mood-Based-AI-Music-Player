@@ -91,13 +91,7 @@ class HomeDashboardViewController: UIViewController {
         setupConstraints()
     }
     
-//    private func setupAddButton() {
-//        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
-//    }
-//    
-//    @objc private func addButtonTapped() {
-//        // Handle add button tap - could be implemented in view model if needed
-//    }
+
     
     private func setupHeaderView() {
         // Header Container
@@ -106,7 +100,7 @@ class HomeDashboardViewController: UIViewController {
         view.addSubview(headerView)
         
         // Title Label
-        titleLabel.text = "Home Dashboard"
+        titleLabel.text = HomeDashboardConstants.title
         titleLabel.textColor = UIColor(white: 0.5, alpha: 1.0)
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         view.addSubview(titleLabel)
@@ -119,7 +113,7 @@ class HomeDashboardViewController: UIViewController {
         headerView.addSubview(menuButton)
         
         // Profile Image
-        profileImageView.image = UIImage(named: "walipfp")
+        profileImageView.image = UIImage(named: AppConfig.profileImage)
         profileImageView.backgroundColor = .lightGray
         profileImageView.layer.cornerRadius = 25
         profileImageView.clipsToBounds = true
@@ -142,7 +136,7 @@ class HomeDashboardViewController: UIViewController {
     }
     
     private func setupSearchBar() {
-        searchBar.textField.placeholder = "Want to search something..."
+        searchBar.textField.placeholder = HomeDashboardConstants.searchPlaceholder
         searchBar.backgroundColor = .white
         searchBar.layer.cornerRadius = 5
         searchBar.clipsToBounds = true

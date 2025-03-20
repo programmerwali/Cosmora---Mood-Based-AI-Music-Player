@@ -13,11 +13,21 @@ import UIKit
 // MARK: - OnboardingViewController
 class OnboardingViewController: UIViewController {
     
+    
     private let pages: [OnboardingPage] = [
-        OnboardingPage(imageName: "onboarding1", title: "Discover Cosmic Tunes", description: "Let the universe choose the perfect soundtrack for your mood."),
-        OnboardingPage(imageName: "onboarding2", title: "AI-Powered Playlists", description: "Advanced AI maps your emotions to celestial soundscapes."),
-        OnboardingPage(imageName: "onboarding3", title: "Explore the Sound Galaxy", description: "Venture into a universe of personalized music recommendations.")
+        OnboardingPage(imageName: OnboardingConstants.page1Image,
+                       title: OnboardingConstants.page1Title,
+                       description: OnboardingConstants.page1Description),
+        
+        OnboardingPage(imageName: OnboardingConstants.page2Image,
+                       title: OnboardingConstants.page2Title,
+                       description: OnboardingConstants.page2Description),
+        
+        OnboardingPage(imageName: OnboardingConstants.page3Image,
+                       title: OnboardingConstants.page3Title,
+                       description: OnboardingConstants.page3Description)
     ]
+
     
     private var pageViewController: UIPageViewController!
     private var pageControl: UIPageControl!
@@ -60,7 +70,6 @@ class OnboardingViewController: UIViewController {
         NSLayoutConstraint.activate([
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pageControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
-            //pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
     
@@ -127,7 +136,6 @@ class OnboardingViewController: UIViewController {
     }
     
     @objc private func skipTapped() {
-        // Go to the last page or finish onboarding
         finishOnboarding()
     }
     
@@ -147,14 +155,11 @@ class OnboardingViewController: UIViewController {
     }
     
     private func finishOnboarding() {
-        // Here you would dismiss the onboarding and show your main app
-        // For example:
          let mainVC = HomeDashboardViewController()
          UIApplication.shared.windows.first?.rootViewController = mainVC
          UIApplication.shared.windows.first?.makeKeyAndVisible()
         
-        // For now, we'll just print a message
-        print("Onboarding completed")
+
     }
     
     private func updateUIForCurrentPage(_ index: Int) {

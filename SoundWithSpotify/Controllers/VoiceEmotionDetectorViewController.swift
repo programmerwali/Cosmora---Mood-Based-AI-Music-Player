@@ -84,7 +84,7 @@ class VoiceEmotionDetectorViewController: UIViewController {
                 self?.emotionLabel.text = emotion
                 
                 // Update the icon for the emotion
-                if emotion != "No emotion detected yet" {
+                if emotion != EmotionConstants.noEmotionDetected {
                     let iconInfo = self?.viewModel.getEmotionIcon(for: emotion)
                     if let iconName = iconInfo?.systemName {
                         let largeConfig = UIImage.SymbolConfiguration(pointSize: 80, weight: .regular)

@@ -24,12 +24,13 @@
 		3E38E1862D708CA90060331C /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1852D708CA90060331C /* ActivityCell.swift */; };
 		3E38E1882D708DCB0060331C /* FilterSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1872D708DCB0060331C /* FilterSearchBar.swift */; };
 		3E38E18A2D70D6220060331C /* SpotifyAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38E1892D70D6220060331C /* SpotifyAuthManager.swift */; };
+		3E414AB12D8C042300E1031D /* MeditationChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E414AB02D8C042300E1031D /* MeditationChatViewController.swift */; };
+		3E414AB32D8C095000E1031D /* constantsfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E414AB22D8C095000E1031D /* constantsfile.swift */; };
 		3EBC33082D74E930004D75D1 /* SpotifyiOS in Frameworks */ = {isa = PBXBuildFile; productRef = 3EBC33072D74E930004D75D1 /* SpotifyiOS */; };
 		3EBC330A2D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBC33092D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift */; };
 		3EBC330C2D74EFF2004D75D1 /* emotionTestRecognizer.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3EBC330B2D74EFF1004D75D1 /* emotionTestRecognizer.mlmodel */; };
 		3EC6D63F2D73326D008528D4 /* SpotifyAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D63E2D73326D008528D4 /* SpotifyAPIManager.swift */; };
 		3EC6D6412D7332D7008528D4 /* SpotifyPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D6402D7332D7008528D4 /* SpotifyPlayerViewController.swift */; };
-		3EC6D6432D733323008528D4 /* SpotifyConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D6422D733323008528D4 /* SpotifyConfiguration.swift */; };
 		3EC6D6452D733704008528D4 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D6442D733704008528D4 /* Notifications.swift */; };
 		3EC6D6472D73374D008528D4 /* SpotifyPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6D6462D73374D008528D4 /* SpotifyPlayerManager.swift */; };
 		3EEFC85D2D7CB1ED00199F9C /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEFC85C2D7CB1ED00199F9C /* Track.swift */; };
@@ -76,11 +77,12 @@
 		3E38E1852D708CA90060331C /* ActivityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
 		3E38E1872D708DCB0060331C /* FilterSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSearchBar.swift; sourceTree = "<group>"; };
 		3E38E1892D70D6220060331C /* SpotifyAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAuthManager.swift; sourceTree = "<group>"; };
+		3E414AB02D8C042300E1031D /* MeditationChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationChatViewController.swift; sourceTree = "<group>"; };
+		3E414AB22D8C095000E1031D /* constantsfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constantsfile.swift; sourceTree = "<group>"; };
 		3EBC33092D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceEmotionDetectorViewController.swift; sourceTree = "<group>"; };
 		3EBC330B2D74EFF1004D75D1 /* emotionTestRecognizer.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = emotionTestRecognizer.mlmodel; sourceTree = "<group>"; };
 		3EC6D63E2D73326D008528D4 /* SpotifyAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPIManager.swift; sourceTree = "<group>"; };
 		3EC6D6402D7332D7008528D4 /* SpotifyPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyPlayerViewController.swift; sourceTree = "<group>"; };
-		3EC6D6422D733323008528D4 /* SpotifyConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyConfiguration.swift; sourceTree = "<group>"; };
 		3EC6D6442D733704008528D4 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		3EC6D6462D73374D008528D4 /* SpotifyPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyPlayerManager.swift; sourceTree = "<group>"; };
 		3EEFC85C2D7CB1ED00199F9C /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
@@ -144,9 +146,7 @@
 				3EEFC8652D7CB40500199F9C /* Controllers */,
 				3EEFC8662D7CB45200199F9C /* NetworkManagers */,
 				3EEFC8692D7CB4EA00199F9C /* Extensions */,
-				3E38E14F2D705F010060331C /* AppDelegate.swift */,
-				3E38E1512D705F010060331C /* SceneDelegate.swift */,
-				3E38E1582D705F030060331C /* Assets.xcassets */,
+				3E414AB42D8C096B00E1031D /* Utils */,
 				3E38E15D2D705F030060331C /* Info.plist */,
 			);
 			path = SoundWithSpotify;
@@ -169,6 +169,17 @@
 			path = SoundWithSpotifyUITests;
 			sourceTree = "<group>";
 		};
+		3E414AB42D8C096B00E1031D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3E414AB22D8C095000E1031D /* constantsfile.swift */,
+				3E38E14F2D705F010060331C /* AppDelegate.swift */,
+				3E38E1512D705F010060331C /* SceneDelegate.swift */,
+				3E38E1582D705F030060331C /* Assets.xcassets */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		3EEFC8642D7CB3F600199F9C /* MLModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +196,7 @@
 				3EEFC8602D7CB30300199F9C /* OnboardingContentViewController.swift */,
 				3E38E1832D7079960060331C /* OnboardingViewController.swift */,
 				3EC6D6402D7332D7008528D4 /* SpotifyPlayerViewController.swift */,
+				3E414AB02D8C042300E1031D /* MeditationChatViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -215,7 +227,6 @@
 		3EEFC8682D7CB4C000199F9C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3EC6D6422D733323008528D4 /* SpotifyConfiguration.swift */,
 				3E38E17F2D7079260060331C /* OnboardingPage.swift */,
 				3EEFC85C2D7CB1ED00199F9C /* Track.swift */,
 			);
@@ -378,6 +389,7 @@
 			files = (
 				3EEFC85F2D7CB27900199F9C /* EmotionHistoryCell.swift in Sources */,
 				3E38E1542D705F010060331C /* HomeDasboardViewController.swift in Sources */,
+				3E414AB32D8C095000E1031D /* constantsfile.swift in Sources */,
 				3E3219862D817C13002FC66F /* HomeDashboardViewModel.swift in Sources */,
 				3E38E1882D708DCB0060331C /* FilterSearchBar.swift in Sources */,
 				3E38E1842D7079960060331C /* OnboardingViewController.swift in Sources */,
@@ -388,10 +400,10 @@
 				3E38E1502D705F010060331C /* AppDelegate.swift in Sources */,
 				3EBC330C2D74EFF2004D75D1 /* emotionTestRecognizer.mlmodel in Sources */,
 				3EEFC8612D7CB30300199F9C /* OnboardingContentViewController.swift in Sources */,
-				3EC6D6432D733323008528D4 /* SpotifyConfiguration.swift in Sources */,
 				3E38E1862D708CA90060331C /* ActivityCell.swift in Sources */,
 				3E38E18A2D70D6220060331C /* SpotifyAuthManager.swift in Sources */,
 				3EEFC85D2D7CB1ED00199F9C /* Track.swift in Sources */,
+				3E414AB12D8C042300E1031D /* MeditationChatViewController.swift in Sources */,
 				3E38E1522D705F010060331C /* SceneDelegate.swift in Sources */,
 				3E38E1802D7079260060331C /* OnboardingPage.swift in Sources */,
 				3EBC330A2D74EC4F004D75D1 /* VoiceEmotionDetectorViewController.swift in Sources */,
